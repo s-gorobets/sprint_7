@@ -4,7 +4,7 @@ import data
 from urls import *
 from data import *
 import allure
-
+from conftest import delet_curier
 class TestCreatingCurier:
     @allure.title('Создание курьера с валидными данными')
     @allure.description('Проверка статус-кода и тела ответа')
@@ -17,6 +17,10 @@ class TestCreatingCurier:
         assert response.status_code == 201
         assert response.json() == Answer.Created
         assert response.json()['ok'] == True
+
+        courier_id = response.json().get("id")
+        if courier_id:
+            delet_curier.append(courier_id)
 
     @allure.title('Создание курьера с уже существующим логином')
     @allure.description('Проверка статус-кода и тела ответа')
